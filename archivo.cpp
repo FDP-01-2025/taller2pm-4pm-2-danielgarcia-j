@@ -60,52 +60,48 @@ void mostrarEstudiantes()
 // 👇 TU TAREA: Completa esta función (UPDATE)
 void modificarEstudiante()
 {
-    ifstream archivo("alumno.txt");
-    ofstream temp("temporal.txt");
+    ifstream archivo("estudiantes.txt");
+    ofstream temp("temp.txt");
     Estudiante e;
     string carnetBuscar;
-    cout << "ingrese el carnet del estudiante a modificar\n";
+    bool encontrado = false;
+
+    cout << "Ingrese el carnet del estudiante a modificar: ";
     cin >> carnetBuscar;
 
-    bool encontrado = false;
     if (archivo.is_open() && temp.is_open())
     {
         while (archivo >> e.nombre >> e.carnet >> e.edad)
         {
             if (e.carnet == carnetBuscar)
             {
-                cout << "Nuevo nombre: ";
+                cout << "Nuevo nombre (sin espacios): ";
                 cin >> e.nombre;
                 cout << "Nuevo carnet: ";
                 cin >> e.carnet;
-                cout << "nueva edad: ";
+                cout << "Nueva edad: ";
                 cin >> e.edad;
                 encontrado = true;
             }
-            else{
-            temp << e.carnet << " " << e.nombre << " " << e.edad << endl;
-            }
-           archivo.close();
-           temp.close();
-
-          remove("alumno.txt");
-          rename("temporal.txt", "alumno.txt");
+            temp << e.nombre << " " << e.carnet << " " << e.edad << endl;
         }
+        archivo.close();
+        temp.close();
 
-          if (encontrado)
-          {
-            cout << "Estudiante modificado correctamente\n";
-          }
+        remove("estudiantes.txt");
+        rename("temp.txt", "estudiantes.txt");
 
+        if (encontrado)
+            cout << "Estudiante modificado correctamente.\n";
         else
-            cout << "No se encontro el estudiante con ese carnet\n";
+            cout << "No se encontró ningún estudiante con ese carnet.\n";
+    }
+    else
+    {
+        cout << "Error al abrir los archivos.\n";
     }
 }
-// Debes permitir actualizar nombre, carnet y/o edad
-// de un estudiante identificado por su carnet.
-// Puedes usar o no manejo de archivos.
-// Si lo implementas con archivos correctamente, obtendrás **2 puntos extra**.
-// Función para eliminar estudiante (DELETE)
+
 void eliminarEstudiante()
 {
     ifstream archivo("estudiantes.txt");
